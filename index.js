@@ -35,4 +35,4 @@ yelp.accessToken(clientId, clientSecret).then(response => {
   console.log(e);
 });
 
-document.getElementById("test").innerHTML="Goodbye world!";
+//document.getElementById("test").innerHTML="Goodbye world!";
