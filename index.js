@@ -34,3 +34,5 @@ yelp.accessToken(clientId, clientSecret).then(response => {
 }).catch(e => {
   console.log(e);
 });
+
+document.getElementByClass("h1").innerHTML="Goodbye world!";
