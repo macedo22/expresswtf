@@ -1,3 +1,5 @@
+window.addEventListener('load', yourFunction, false);
+
 const express = require('express')
 const app = express()
 
