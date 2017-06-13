@@ -37,13 +37,15 @@ const yelp = require('yelp-fusion');
 const clientId = 'UCn9wNpGoW4R8I-skfKghw';
 const clientSecret = 'sU7Db2PGwyTiFk338fP1YX7CSlpTyp8NZ7ap3wvOILXLV8yK3KDN5tR3oO6U9pwx';
 
+
 const searchRequest = {
   term:'Four Barrel Coffee',
   location: 'san francisco, ca'
 };
 
-yelp.accessToken(clientId, clientSecret).then(response => {
-  const client = yelp.client(response.jsonBody.access_token);
+
+yelp.accessToken(clientId, clientSecret).then(response => {   // pass client credentials
+  const client = yelp.client(response.jsonBody.access_token);  //client now holds token in json form?-like the post call
 
   client.search(searchRequest).then(response => {
     const firstResult = response.jsonBody.businesses[0];
@@ -91,10 +93,21 @@ class Restaurant{
         return review;
     }
     
-    getRestaurants(zipcode,categories){
+    getRestaurants(zipcode,criteria){
             //do get request based on search criteria
     //populate an array with first 10 restauarants with for loop
     //return the array of restaurant matches
+        //var zip= zipcode;
+        //var category= categories;    
+        const request={
+            zip: zipcode,
+            categories: criteria
+        };
+        
+        
+    
+    
+        
     }
     //we should check to see if we can submit a get request specifying at least 3 stars
     isDecent(/*pass restarant id or whole json object*/){
