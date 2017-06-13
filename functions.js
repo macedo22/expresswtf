@@ -30,6 +30,8 @@ app.listen(3000, function () {
 
 'use strict';
 
+const numberOfResults=10;//subject to change
+
 const yelp = require('yelp-fusion');
 
 // Place holders for Yelp Fusion's OAuth 2.0 credentials. Grab them
@@ -41,6 +43,29 @@ const clientSecret = 'sU7Db2PGwyTiFk338fP1YX7CSlpTyp8NZ7ap3wvOILXLV8yK3KDN5tR3oO
 const searchRequest = {
   term:'Four Barrel Coffee',
   location: 'san francisco, ca'
+};
+
+htttpRequest=function(req){
+  var results=[];
+  yelp.accessToken(clientId, clientSecret).then(response => {   // pass client credentials
+    const client = yelp.client(response.jsonBody.access_token);  //client now holds token in json form?-like the post call
+    
+    client.search(req).then(response => {
+      var temp;
+      for(var i=0;i<numberOfResults;i++){
+          temp=response.json.Body.businesses[i];
+          results[i] = JSON.stringify(temp);
+          console.log(results[i]);
+      };
+            
+      //const firstResult = response.jsonBody.businesses[0];
+      //const prettyJson = JSON.stringify(firstResult, null, 4);
+      //console.log(prettyJson);
+    });
+  }).catch(e => {
+    console.log(e);
+  });
+  return results;
 };
 
 
@@ -103,6 +128,8 @@ class Restaurant{
             zip: zipcode,
             categories: criteria
         };
+        
+        var result=httpRequest(request);
         
         
     
