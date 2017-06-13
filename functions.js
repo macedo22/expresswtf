@@ -5,14 +5,15 @@
  */
 
 
-exports.myDateTime = function () {
+/*myDateTime = function () {
     return Date();
-};
+};*/
 
 
 
 //self-made functions to export
 
+/*
 
 http.createServer(function (req, res) {
     res.writeHead(200, {'Content-Type': 'text/html'});
@@ -28,46 +29,15 @@ app.listen(3000, function () {
   console.log('Example app listening on port 3000!');
 });
 
-'use strict';
+*/
 
-const numberOfResults=10;//subject to change
-
-const yelp = require('yelp-fusion');
-
-// Place holders for Yelp Fusion's OAuth 2.0 credentials. Grab them
-// from https://www.yelp.com/developers/v3/manage_app
-const clientId = 'UCn9wNpGoW4R8I-skfKghw';
-const clientSecret = 'sU7Db2PGwyTiFk338fP1YX7CSlpTyp8NZ7ap3wvOILXLV8yK3KDN5tR3oO6U9pwx';
-
-
-const searchRequest = {
+/*
+ * 
+ * 
+ const searchRequest = {
   term:'Four Barrel Coffee',
   location: 'san francisco, ca'
 };
-
-htttpRequest=function(req){
-  var results=[];
-  yelp.accessToken(clientId, clientSecret).then(response => {   // pass client credentials
-    const client = yelp.client(response.jsonBody.access_token);  //client now holds token in json form?-like the post call
-    
-    client.search(req).then(response => {
-      var temp;
-      for(var i=0;i<numberOfResults;i++){
-          temp=response.json.Body.businesses[i];
-          results[i] = JSON.stringify(temp);
-          console.log(results[i]);
-      };
-            
-      //const firstResult = response.jsonBody.businesses[0];
-      //const prettyJson = JSON.stringify(firstResult, null, 4);
-      //console.log(prettyJson);
-    });
-  }).catch(e => {
-    console.log(e);
-  });
-  return results;
-};
-
 
 yelp.accessToken(clientId, clientSecret).then(response => {   // pass client credentials
   const client = yelp.client(response.jsonBody.access_token);  //client now holds token in json form?-like the post call
@@ -80,20 +50,73 @@ yelp.accessToken(clientId, clientSecret).then(response => {   // pass client cre
 }).catch(e => {
   console.log(e);
 });
+*/
 
 
 
 
 
-class Restaurant{
-    constructor(zipcode, categories){
-        this.zipcode=zipcode;
-        this.catgories=catagories;
+
+
+/******SAMPLE CODE ABOVE. CLASS AND FUNCTION PROTOTYPES BELOW*************/
+
+
+
+'use strict';
+
+const numberOfResults=20;//subject to change
+
+const yelp = require('yelp-fusion');
+const http = require('http');
+
+// Place holders for Yelp Fusion's OAuth 2.0 credentials. Grab them
+// from https://www.yelp.com/developers/v3/manage_app
+const clientId = 'UCn9wNpGoW4R8I-skfKghw';
+const clientSecret = 'sU7Db2PGwyTiFk338fP1YX7CSlpTyp8NZ7ap3wvOILXLV8yK3KDN5tR3oO6U9pwx';
+
+
+
+htttpRequest=function(req){
+  var results=[];
+  yelp.accessToken(clientId, clientSecret).then(response => {   // pass client credentials
+    const client = yelp.client(response.jsonBody.access_token);  //client now holds token in json form?-like the post call
+    
+    client.search(req).then(response => {
+      var temp;
+      for(var i=0;i<numberOfResults;i++){
+          temp=response.json.Body.businesses[i];
+          results[i]=new Restaurant();
+          results[i].addRestaurant(temp);
+          const prettyJson = JSON.stringify(temp);
+          console.log(results[i]);
+      }
+    });
+  }).catch(e => {
+    console.log(e);
+  });
+  return results;
+};
+
+
+var results=[];//will use addRestaurant to populate this
+
+
+class Restaurant{  
+    constructor()/*(zipcode, categories)*/{
+        //this.zipcode=zipcode;
+        //this.catgories=catagories;
+        var zipcode;
+        var categories;
         var name;
         var phoneNumber;
         var url;
         var address;
         var review;//or photo?
+        var price;
+        var image_url;
+        var id;
+        var rating;
+        var isOption=true;
     }
     
     static getZipCode(){
@@ -118,6 +141,21 @@ class Restaurant{
         return review;
     }
     
+    addRestaurant(restaurant){
+        this.zipcode=restaurant.zipcode.toString();
+        this.categories=restaurant.categories.toString();
+        this.name=restaurant.name.toString();
+        this.phoneNumber=restaurant.phoneNumber.toString();
+        this.url=restaurant.url.toString();
+        this.address=restaurant.address.toString();
+        this.review=restaurant.review.toString();
+        this.price=restaurant.price.toString();
+        this.image_url=restaurant.image_url.toString();
+        this.id=restaurant.id.toString();
+        this.rating=restaurant.rating.toString();        
+        //return this;//return restaurant with data filled in
+    }
+    
     getRestaurants(zipcode,criteria){
             //do get request based on search criteria
     //populate an array with first 10 restauarants with for loop
@@ -129,10 +167,17 @@ class Restaurant{
             categories: criteria
         };
         
-        var result=httpRequest(request);
+        var matches=httpRequest(request);//will store results returned at end of http function
+                                         //now, matches is an array of restaurant objects
+                                         
+        //pick a random number from 0 to 19
+        //access matches[index] components
+        //put components into resultPage
+        //make matches[index].isOption=false
+        
+        //handle regenerating
         
         
-    
     
         
     }
@@ -144,6 +189,26 @@ class Restaurant{
     
 }
 
+htttpRequest=function(req){
+  yelp.accessToken(clientId, clientSecret).then(response => {   // pass client credentials
+    const client = yelp.client(response.jsonBody.access_token);  //client now holds token in json form?-like the post call
+    
+    client.search(req).then(response => {
+      var temp;
+      for(var i=0;i<numberOfResults;i++){
+          temp=response.json.Body.businesses[i];
+          temp=new(Restaurant);
+          results[i]=addRestaurant(temp);
+          const prettyJson = JSON.stringify(temp);
+          console.log(results[i]);
+      }
+    });
+  }).catch(e => {
+    console.log(e);
+  });
+  return results;
+};
+
 
 
 
@@ -151,11 +216,11 @@ class Restaurant{
 /******************Fuctions to create*************/
 
 
-function getRestaurants(zipcode, categories){
+//function getRestaurants(zipcode, categories){
     //do get request based on search criteria
     //populate an array with first 10 restauarants with for loop
     //return the array of restaurant matches
-};
+//};
 
 
 
@@ -170,55 +235,6 @@ function isDecent(/*pass restarant id or whole json object*/){
 
 
 function isArray(myArray) {
-    return myArray.constructor.toString().indexOf("Array") > -1;
+    return myArray.constructor.toString().indexOf("Array") > -1;  // validates that object passed is an array
 };
 
-
-
-
-
-/*
-
-//Function to store first 10 results into an array
-function getTopResults(resArray){
-    //send get request for restauarants that fit criteria
-    //populate array with restaurant matches
-};
-
-// Parses out and checks if restauarant has category
-//this may be unenecessary if yelp let's us screen for criteria upfront
-function hasCriterion(category){
-    //return bool
-};
-
-*/
-
-/*The following function is very different if we can specify to yelp to only
- * return restauarants that fit the criteria in the first place... which is 
- * probably what it does lol*/
-
-/*
-
-//takes zipcode and criteria and does get request
-//var zipcode ="";
-//var criterion=["","","","","",""];
-function getRestaurantById(zipcode, criterion){
-    if(isArray(criterion)&&criterion.length!==0){  //check to make sure criterion is an array
-        const numOfResults=10;
-        var results=[];
-        var matchedResults=[];
-        //get results and store in results array (only 10 for now)
-        for(var i=0;i<results.length;i++){ // check all the results from yelp
-            var match=false;
-            for(var j=0;criterion[j]!=="";j++){
-                //if criterion not found, exit loop; if it is, just continue
-                //i.e.: if(results[i].hasCriterion(criterion[j])===false)
-                //            exit;
-            }
-            if(status===true){
-                //add result to mtachedResults
-            }
-        }
-    }
-};
-*/
