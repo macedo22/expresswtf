@@ -57,6 +57,57 @@ yelp.accessToken(clientId, clientSecret).then(response => {
 
 
 
+
+class Restaurant{
+    constructor(zipcode, categories){
+        this.zipcode=zipcode;
+        this.catgories=catagories;
+        var name;
+        var phoneNumber;
+        var url;
+        var address;
+        var review;//or photo?
+    }
+    
+    static getZipCode(){
+        return zipcode;
+    }
+    static getCategories(){
+        return categories;
+    }
+    static getName(){
+        return name;
+    }
+    static getPhoneNumber(){
+        return phoneNumber;
+    }
+    static getURL(){
+        return url;
+    }
+    static getAddress(){
+        return address;
+    }
+    static review(){
+        return review;
+    }
+    
+    getRestaurants(zipcode,categories){
+            //do get request based on search criteria
+    //populate an array with first 10 restauarants with for loop
+    //return the array of restaurant matches
+    }
+    //we should check to see if we can submit a get request specifying at least 3 stars
+    isDecent(/*pass restarant id or whole json object*/){
+    //parse out # of stars
+    //return whether or not it is at least 3 stars (bool)
+    }//
+    
+}
+
+
+
+
+
 /******************Fuctions to create*************/
 
 
@@ -86,6 +137,8 @@ function isArray(myArray) {
 
 
 
+/*
+
 //Function to store first 10 results into an array
 function getTopResults(resArray){
     //send get request for restauarants that fit criteria
@@ -98,11 +151,13 @@ function hasCriterion(category){
     //return bool
 };
 
-
+*/
 
 /*The following function is very different if we can specify to yelp to only
  * return restauarants that fit the criteria in the first place... which is 
  * probably what it does lol*/
+
+/*
 
 //takes zipcode and criteria and does get request
 //var zipcode ="";
@@ -126,3 +181,4 @@ function getRestaurantById(zipcode, criterion){
         }
     }
 };
+*/
