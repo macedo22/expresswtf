@@ -60,8 +60,6 @@ yelp.accessToken(clientId, clientSecret).then(response => {   // pass client cre
 
 /******SAMPLE CODE ABOVE. CLASS AND FUNCTION PROTOTYPES BELOW*************/
 
-
-
 'use strict';
 
 const numberOfResults=20;//subject to change
@@ -74,10 +72,9 @@ const http = require('http');
 const clientId = 'UCn9wNpGoW4R8I-skfKghw';
 const clientSecret = 'sU7Db2PGwyTiFk338fP1YX7CSlpTyp8NZ7ap3wvOILXLV8yK3KDN5tR3oO6U9pwx';
 
-
+var results=[];//use addRestaurant to populate this
 
 htttpRequest=function(req){
-  var results=[];
   yelp.accessToken(clientId, clientSecret).then(response => {   // pass client credentials
     const client = yelp.client(response.jsonBody.access_token);  //client now holds token in json form?-like the post call
     
@@ -96,9 +93,6 @@ htttpRequest=function(req){
   });
   return results;
 };
-
-
-var results=[];//will use addRestaurant to populate this
 
 
 class Restaurant{  
@@ -163,8 +157,9 @@ class Restaurant{
         //var zip= zipcode;
         //var category= categories;    
         const request={
-            zip: zipcode,
-            categories: criteria
+            location: zipcode,
+            categories: criteria,
+            sort_by: 'rating'
         };
         
         var matches=httpRequest(request);//will store results returned at end of http function
@@ -175,42 +170,9 @@ class Restaurant{
         //put components into resultPage
         //make matches[index].isOption=false
         
-        //handle regenerating
-        
-        
-    
+        //handle regenerating   
         
     }
-    //we should check to see if we can submit a get request specifying at least 3 stars
-    isDecent(/*pass restarant id or whole json object*/){
-    //parse out # of stars
-    //return whether or not it is at least 3 stars (bool)
-    }//
-    
-}
-
-htttpRequest=function(req){
-  yelp.accessToken(clientId, clientSecret).then(response => {   // pass client credentials
-    const client = yelp.client(response.jsonBody.access_token);  //client now holds token in json form?-like the post call
-    
-    client.search(req).then(response => {
-      var temp;
-      for(var i=0;i<numberOfResults;i++){
-          temp=response.json.Body.businesses[i];
-          temp=new(Restaurant);
-          results[i]=addRestaurant(temp);
-          const prettyJson = JSON.stringify(temp);
-          console.log(results[i]);
-      }
-    });
-  }).catch(e => {
-    console.log(e);
-  });
-  return results;
-};
-
-
-
 
 
 /******************Fuctions to create*************/
